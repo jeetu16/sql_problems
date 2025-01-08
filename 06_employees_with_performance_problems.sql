@@ -27,7 +27,7 @@ INSERT INTO employees_with_performance (employee_id, name, performance_rating, s
 
 
 -- 19. Given a table orders with columns order_id (sequential integers), order_date, write a query to identify the missing order IDs.
-select * from orders;
+SELECT * FROM orders;
 WITH RECURSIVE numbers AS (
 	SELECT 1 AS num
     UNION ALL
@@ -44,38 +44,38 @@ WHERE order_id IS NULL;
 -- 1. Classify employees into different performance levels based on both performance rating and salary: 'Top Performer' for 'Excellent' rating and salary greater than 7000, 'Good Performer' for 'Good' rating and salary  greater than 5000, and 'Others' for all other combination
 
 -- Solution 1
-select 
+SELECT 
+	employee_id,
+    NAME,
+    salary,
+    'Top Performer' AS performance_level
+FROM employees_with_performance
+WHERE performance_rating = 'Excellent' AND salary > 7000
+UNION
+SELECT 
 	employee_id,
     name,
     salary,
-    'Top Performer' as performance_level
-from employees_with_performance
-where performance_rating = 'Excellent' and salary > 7000
-union
-select 
+    'Good Performer' AS performance_level
+FROM employees_with_performance
+WHERE performance_rating = 'Good' AND salary > 5000
+UNION
+SELECT 
 	employee_id,
     name,
     salary,
-    'Good Performer' as performance_level
-from employees_with_performance
-where performance_rating = 'Good' and salary > 5000
-union
-select 
-	employee_id,
-    name,
-    salary,
-    'Others' as performance_level
-from employees_with_performance
-where salary < 5000;
+    'Others' AS performance_level
+FROM employees_with_performance
+WHERE salary < 5000;
 
 -- Solution 2
-select	
+SELECT	
 	employee_id,
     name,
     salary,
-    case
-		when performance_rating = 'Excellent' and salary > 7000 then 'Top Performer'
-        when performance_rating = 'Good' and salary > 5000 then 'Good Performer'
-        else 'Others'
-	end as performance_level
-from employees_with_performance;
+    CASE
+		WHEN performance_rating = 'Excellent' AND salary > 7000 THEN 'Top Performer'
+        WHEN performance_rating = 'Good' AND salary > 5000 THEN 'Good Performer'
+        ELSE 'Others'
+	END AS performance_level
+FROM employees_with_performance;
