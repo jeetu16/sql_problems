@@ -144,8 +144,43 @@ JOIN teams t
 WHERE player_id IN (32, 67);
 
 -- Q6. find no.of players from each team and return team names and no.of players in each team
+-- Solution : 
+SELECT
+	t.team_id,
+    t.team_name,
+    COUNT(*)
+FROM teams t
+JOIN players p
+	ON t.team_id = p.team_id
+GROUP BY t.team_id, t.team_name;
+
 -- Q7. rank the players depending upon the salary they get
--- Q8. find top 3 teams who spend more money on players
+-- Solution :
+SELECT
+	t.team_id,
+    t.team_name,
+    p.player_name,
+    p.role,
+    p.salary,
+    DENSE_RANK() OVER(ORDER BY salary DESC) AS rnk
+FROM players p
+JOIN teams t
+	ON p.team_id = t.team_id;
+
+
+-- Q8. find top 3 teams who spend more money on players.
+-- Solution :
+SELECT
+	t.team_id,
+    t.team_name,
+    SUM(p.salary) AS total_spend
+FROM players p
+JOIN teams t
+	ON p.team_id = t.team_id
+GROUP BY t.team_id, t.team_name
+ORDER BY total_spend DESC
+LIMIT 3;
+
 -- Q8. find top 3 teams who spend more money on players
 -- Q9. What is the team name and captain name of the team_id =4
 -- Q10. What are the player names and their roles in the team with team_id =3,8
