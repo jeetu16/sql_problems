@@ -181,11 +181,63 @@ GROUP BY t.team_id, t.team_name
 ORDER BY total_spend DESC
 LIMIT 3;
 
--- Q8. find top 3 teams who spend more money on players
+
 -- Q9. What is the team name and captain name of the team_id =4
+-- Solution :
+SELECT
+	t.team_id,
+    t.team_name,
+	p.player_name AS captain
+FROM players p
+JOIN teams t
+	ON p.player_id = t.captain_id
+WHERE t.team_id = 4;
+
 -- Q10. What are the player names and their roles in the team with team_id =3,8
--- Q11. What are the team names and the number of matches they have won? and show some rankings in points table use 
--- both rank and dense rank functions to see the difference.
+SELECT
+	t.team_name,
+    p.player_name,
+    p.role
+FROM players p 
+JOIN teams t 
+	ON p.team_id = t.team_id
+WHERE t.team_id IN (3, 8);
+
+-- Q11. What are the team names and the number of matches they have won? and show some rankings in points table use
+-- both row number and dense rank functions to see the difference.
+-- Solution 1(Using DENSE_RANK()):
+WITH cte AS (
+	SELECT
+		winner_id,
+		COUNT(*) AS won
+	FROM matches
+    GROUP BY winner_id
+)
+SELECT 
+	DENSE_RANK() OVER(ORDER BY won DESC) AS Ranking,
+	t.team_name,
+    won
+FROM cte
+JOIN teams t
+	ON cte.winner_id = t.team_id;
+
+-- Solution 2(Using ROW_NUMBER())
+WITH cte AS (
+	SELECT
+		winner_id,
+		COUNT(*) AS won
+	FROM matches
+    GROUP BY winner_id
+)
+SELECT 
+	ROW_NUMBER() OVER(ORDER BY won DESC) AS Ranking,
+	t.team_name,
+    IFNULL(won, 0)
+FROM cte
+RIGHT JOIN teams t
+	ON cte.winner_id = t.team_id;
+    
+
 -- Q12 What is the average salary of players in the teams with different cities?
 -- Q13. Which team won the most matches?
 -- Q14. What is the date and the total score of the match and return date on which recorded maximum score.
