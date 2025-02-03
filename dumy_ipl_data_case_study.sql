@@ -239,5 +239,37 @@ RIGHT JOIN teams t
     
 
 -- Q12 What is the average salary of players in the teams with different cities?
+-- Solution :
+SELECT
+	t.city,
+    AVG(p.salary) AS avg_salary
+FROM players p
+RIGHT JOIN teams t 
+	ON p.team_id = t.team_Id
+GROUP BY t.city
+ORDER BY avg_salary DESC;
+
 -- Q13. Which team won the most matches?
+-- Solution :
+SELECT
+	t.team_name,
+    COUNT(m.winner_id) AS won
+FROM matches m
+JOIN teams t 
+	ON m.winner_id = t.team_Id
+GROUP BY t.team_name
+ORDER BY won DESC
+LIMIT 1;
+
 -- Q14. What is the date and the total score of the match and return date on which recorded maximum score.
+SELECT 
+	match_date,
+	score_team1 + score_team2 AS total_score
+FROM matches;
+
+SELECT 
+	match_date,
+	score_team1 + score_team2 AS total_score
+FROM matches
+ORDER BY total_score DESC
+LIMIT 1;
