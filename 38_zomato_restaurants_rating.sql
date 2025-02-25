@@ -36,7 +36,7 @@ WITH cte AS (
 		COUNT(review_id) AS total_review,
 		SUM(rating) AS total_rating
 	FROM reviews
-	GROUP BY restaurant_id,month(submit_date)
+	GROUP BY restaurant_id, MONTH(submit_date)
 	HAVING total_review > 1
 )
 SELECT
