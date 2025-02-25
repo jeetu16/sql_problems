@@ -12,7 +12,7 @@ CREATE TABLE ProductViews (
 );
 
 
--- Inser values into ProductViews table
+-- Insert values into ProductViews table
 INSERT INTO ProductViews (CustomerID, ProductID, ViewDate) VALUES
 (101, 5001, '2099-02-10'),
 (101, 5001, '2099-02-11'),
