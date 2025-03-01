@@ -249,9 +249,43 @@ FROM cte
 GROUP BY session_id, batch_name, teacher_name
 ORDER BY 2;
 
-/*
+/* ******************** QUESTION #2 ******************** */
+-- > 2.Find the attendance percentage  for each session for each batch. Also mention the batch name and users name who has conduct that session
 
-2.Find the attendance percentage  for each session for each batch. Also mention the batch name and users name who has conduct that session
+WITH tse AS (
+	SELECT
+		s.id AS session_id,
+		sbm.batch_id,
+		COUNT(user_id) AS total_student_enrolled
+	FROM student_batch_maps sbm
+  JOIN sessions s ON sbm.batch_id = s.batch_id
+	WHERE sbm.active = 1
+	GROUP BY sbm.batch_id, s.id
+),
+tsp AS (
+	SELECT
+		s.id AS session_id,
+		COUNT(student_id) AS total_student_attended
+	FROM sessions s
+  LEFT JOIN attendances a ON a.session_id = s.id
+  LEFT JOIN student_batch_maps sbm ON sbm.user_id = a.student_id AND sbm.batch_id = s.batch_id
+  WHERE sbm.active = 1
+	GROUP BY session_id
+)
+SELECT
+	e.session_id,
+    e.batch_id,
+    u.name AS teacher,
+    b.name AS batch,
+    COALESCE((p.total_student_attended * 100) / NULLIF(e.total_student_enrolled, 0), 0) AS attendance_percentage
+FROM tse e
+LEFT JOIN tsp p ON e.session_id = p.session_id
+JOIN batches b ON b.id = e.batch_id
+JOIN sessions s ON s.id = e.session_id
+JOIN users2 u ON u.id = s.conducted_by
+ORDER BY session_id;
+
+/*
 
 3.What is the average marks scored by each student in all the tests the student had appeared?
 
