@@ -258,7 +258,7 @@ WITH tse AS (
 		sbm.batch_id,
 		COUNT(user_id) AS total_student_enrolled
 	FROM student_batch_maps sbm
-  JOIN sessions s ON sbm.batch_id = s.batch_id
+	JOIN sessions s ON sbm.batch_id = s.batch_id
 	WHERE sbm.active = 1
 	GROUP BY sbm.batch_id, s.id
 ),
@@ -267,9 +267,9 @@ tsp AS (
 		s.id AS session_id,
 		COUNT(student_id) AS total_student_attended
 	FROM sessions s
-  LEFT JOIN attendances a ON a.session_id = s.id
-  LEFT JOIN student_batch_maps sbm ON sbm.user_id = a.student_id AND sbm.batch_id = s.batch_id
-  WHERE sbm.active = 1
+	LEFT JOIN attendances a ON a.session_id = s.id
+	LEFT JOIN student_batch_maps sbm ON sbm.user_id = a.student_id AND sbm.batch_id = s.batch_id
+	WHERE sbm.active = 1
 	GROUP BY session_id
 )
 SELECT
@@ -285,9 +285,17 @@ JOIN sessions s ON s.id = e.session_id
 JOIN users2 u ON u.id = s.conducted_by
 ORDER BY session_id;
 
-/*
+/* ******************** QUESTION #3 ******************** */
+-- > 3.What is the average marks scored by each student in all the tests the student had appeared?
 
-3.What is the average marks scored by each student in all the tests the student had appeared?
+SELECT
+	user_id,
+	ROUND(AVG(score),2) AS avg_score
+FROM test_scores
+GROUP BY user_id;
+
+
+/*
 
 4.A student is passed when he scores 40 percent of total marks in a test. Find out how many students passed in each test. Also mention the batch name for that test.
 
