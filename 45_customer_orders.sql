@@ -1,4 +1,3 @@
-
 -- Creating Database
 CREATE DATABASE IF NOT EXISTS local_mysql;
 -- Selecting Database;
