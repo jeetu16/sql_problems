@@ -25,8 +25,6 @@ VALUES
     (6,'app-installed','2022-01-04','Pakistan'),
     (6,'app-purchase','2022-01-04','Pakistan');
 
-select * from activity;
-
 -- Q1 : find total active users each day.
 -- Solution :
 SELECT
@@ -46,6 +44,49 @@ WHERE event_name = 'app-installed'
 GROUP BY week;
 
 -- Q3: find date wise total number of users who made the purchase same day they installed the app.
--- Q4: percentage of paid users in India, USA and any other countries should be tagged as others 
+-- Solution :
+SELECT 
+	user_id,
+	event_date,
+	COUNT(DISTINCT event_name) AS users
+FROM activity
+GROUP BY user_id, event_date
+HAVING users = 2;
+
+-- Q4: percentage of paid users in India, USA and any other countries should be tagged as others
+-- Solution :
+
+WITH cte_paid_users as (
+	 SELECT 
+		country,
+		count(1) AS paid_users
+	FROM activity
+	WHERE event_name = 'app-purchase'
+	GROUP BY country
+),
+cte_countries AS (
+	SELECT
+		CASE
+			WHEN country = 'India' THEN country
+			WHEN country = 'USA' THEN country
+			ELSE 'Others'
+		END AS country,
+		paid_users
+	FROM cte_paid_users
+),
+cte_paid_users_countrywise AS (
+	SELECT
+		country,
+        SUM(paid_users) AS paid_users
+	FROM cte_countries
+    GROUP BY country
+)
+SELECT
+	country,
+	(paid_users / (SELECT SUM(paid_users) FROM cte_paid_users_countrywise)) * 100 AS paid_users_percentage
+FROM cte_paid_users_countrywise;
+
+ 
 -- Q5: among all the users who installed the app on a given day, how many users did app purchased on the very next day.
+
 
