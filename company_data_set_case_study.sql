@@ -184,28 +184,95 @@ FROM Departments d
 LEFT JOIN Employees e USING (department_id)
 GROUP BY department_name;
 
-/*
+
 -- 8. Get all products that cost more than $50.
+-- Solution :
+
+SELECT *
+FROM Products
+WHERE price > 50;
+
 
 -- 9. Retrieve all payments made via "Credit Card".
 
+-- Solution :
+SELECT *
+FROM Payments 
+WHERE payment_method = 'Credit Card';
+
+
 -- 10. Get the names of employees hired after 2020.
 
-Medium (60 Questions)
-Joins (15 Questions)
+-- Solution :
+SELECT *
+FROM Employees
+WHERE hire_date > '2020-12-31';
+
+
+-- Medium (60 Questions)
+-- Joins (15 Questions)
 
 -- 11. Retrieve a list of employees along with their department names.
 
+-- Solution :
+
+SELECT
+	e.*,
+    d.department_name
+FROM Employees e
+JOIN Departments d USING(department_id);
+
 -- 12. Find all orders along with customer names.
+
+-- Solution :
+SELECT
+	o.*,
+    CONCAT(c.first_name, ' ', c.last_name) AS customer_name
+FROM Orders o
+JOIN Customers c USING(customer_id);
 
 -- 13. Get the list of products along with their category names.
 
+-- Solution :
+
+SELECT
+	p.*,
+    c.category_name
+FROM Products p
+JOIN Categories c USING (category_id);
+
 -- 14. Show all employees along with their salaries from the Salaries table.
+
+-- Solution :
+SELECT
+	e.employee_id,
+    e.first_name,
+    e.last_name,
+    e.department_id,
+    e.hire_date,
+    s.salary
+FROM Salaries s
+JOIN Employees e USING(employee_id);
 
 -- 15. List customers who have placed at least one order.
 
+-- Solution :
+SELECT
+	c.*,
+    o.order_id
+FROM Customers c
+JOIN Orders o USING(customer_id);
+
 -- 16. Find products that have never been ordered.
 
+-- Solution :
+SELECT
+	p.*
+FROM Products p
+LEFT JOIN OrderDetails od USING(product_id)
+WHERE order_detail_id IS NULL;
+
+/*
 -- 17. Get the total number of orders for each customer.
 
 -- 18. Retrieve employees who work in the "IT" department.
