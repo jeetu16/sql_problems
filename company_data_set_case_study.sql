@@ -272,17 +272,53 @@ FROM Products p
 LEFT JOIN OrderDetails od USING(product_id)
 WHERE order_detail_id IS NULL;
 
-/*
 -- 17. Get the total number of orders for each customer.
 
--- 18. Retrieve employees who work in the "IT" department.
+SELECT
+	c.customer_id,
+    c.first_name,
+    c.last_name,
+    COUNT(order_id)
+FROM Customers c
+LEFT JOIN Orders o USING(customer_id)
+GROUP BY c.customer_id, c.first_name, c.last_name;
+
+-- 18. Retrieve employees who work in the "Engineering" department.
+-- Solution :
+SELECT 
+	e.*,
+	d.department_name
+FROM Employees e
+JOIN Departments d USING(department_id)
+WHERE department_name = 'Engineering';
 
 -- 19. Find customers along with the total amount they spent.
 
+-- Solution :
+SELECT
+	CONCAT(first_name, ' ', last_name) as name,
+	SUM(quantity * unit_price) AS total_spent
+FROM Customers c
+JOIN Orders o USING(customer_id)
+JOIN OrderDetails od USING(order_id)
+GROUP BY name;
+
 -- 20. Get employees who have not been assigned to a department.
+-- Solution :
+SELECT *
+FROM Employees
+WHERE department_id IS NULL;
 
 -- 21. Retrieve all products that belong to the "Electronics" category.
+-- Solution :
+SELECT
+	p.*,
+    c.category_name
+FROM Products p
+JOIN Categories c USING(category_id)
+WHERE c.category_name = 'Electronics';
 
+/*
 -- 22. Find employees along with their department and manager details.
 
 -- 23. Retrieve orders along with payment details.
@@ -291,7 +327,7 @@ WHERE order_detail_id IS NULL;
 
 -- 25. Get the total amount of payments received for each order.
 
-Aggregations (10 Questions)
+-- Aggregations (10 Questions)
 
 -- 26. Find the average salary of employees.
 
