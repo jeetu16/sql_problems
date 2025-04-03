@@ -318,15 +318,68 @@ FROM Products p
 JOIN Categories c USING(category_id)
 WHERE c.category_name = 'Electronics';
 
-/*
+
 -- 22. Find employees along with their department and manager details.
+
+-- Solution :
+SELECT
+	e.*,
+    d.manager_id,
+    CONCAT(m.first_name, ' ', m.last_name) AS name
+FROM Employees e
+JOIN Departments d USING(department_id)
+JOIN Employees m ON d.manager_id = m.employee_id;
+
 
 -- 23. Retrieve orders along with payment details.
 
+-- Solution :
+SELECT *
+FROM Orders o
+LEFT JOIN Payments p USING(order_id);
+
+
 -- 24. Find the most expensive product in each category.
+
+-- Solution :
+WITH cte AS (
+	SELECT
+		c.category_name,
+		p.*,
+		DENSE_RANK() OVER(PARTITION BY category_name ORDER BY price DESC) AS rnk
+	FROM Products p
+	LEFT JOIN Categories c USING(category_id)
+)
+SELECT
+	category_name,
+    product_id,
+    product_name,
+    category_id,
+    price
+FROM cte
+WHERE rnk = 1;
 
 -- 25. Get the total amount of payments received for each order.
 
+-- Solution 1:
+SELECT
+	order_id,
+    (
+		SELECT SUM(amount)
+        FROM Payments
+        WHERE order_id = o.order_id
+    ) AS total_amount
+FROM Orders o;
+
+-- Solution 2:
+SELECT
+	o.order_id,
+    SUM(amount) AS total_amount
+FROM Orders o
+LEFT JOIN Payments p USING(order_id)
+GROUP BY o.order_id;
+
+/*
 -- Aggregations (10 Questions)
 
 -- 26. Find the average salary of employees.
