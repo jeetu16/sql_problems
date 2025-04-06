@@ -442,18 +442,59 @@ FROM Departments d
 LEFT JOIN Employees e ON d.department_id = e.department_id
 GROUP BY d.department_name;
 
-/*
+
 -- 31. Count the number of employees in each department.
+
+-- Solution :
+SELECT
+	d.department_name,
+    COUNT(employee_id) AS total_employee
+FROM Departments d
+LEFT JOIN Employees e ON d.department_id = e.department_id
+GROUP BY d.department_id;
 
 -- 32. Get the total quantity of products sold.
 
+-- Solution :
+SELECT
+	SUM(quantity) AS total_products_sold
+FROM OrderDetails;
+
 -- 33. Find the most frequently purchased product.
+
+-- Solution :
+SELECT
+	product_name,
+    SUM(quantity) AS total_quantity_sold
+FROM Products p
+LEFT JOIN OrderDetails od ON p.product_id = od.product_id
+GROUP BY product_name
+ORDER BY total_quantity_sold DESC
+LIMIT 1;
 
 -- 34. Retrieve the average order amount.
 
+-- Solution :
+SELECT
+	AVG(order_total) AS avg_order_amount
+FROM (
+	SELECT 
+		order_id,
+        SUM(quantity*unit_price) AS order_total
+	FROM OrderDetails
+    GROUP BY order_id
+) AS sub;
+
 -- 35. Find the total amount paid via "PayPal".
 
-Subqueries (10 Questions)
+-- Solution :
+SELECT
+	SUM(amount) AS total_amount
+FROM Payments
+WHERE payment_method = 'PayPal';
+
+/*
+-- Subqueries (10 Questions)
 
 -- 36. Find employees who earn more than the average salary.
 
