@@ -493,19 +493,45 @@ SELECT
 FROM Payments
 WHERE payment_method = 'PayPal';
 
-/*
+
 -- Subqueries (10 Questions)
 
 -- 36. Find employees who earn more than the average salary.
 
+-- Solution
+SELECT *
+FROM Employees
+WHERE salary > (
+	SELECT AVG(salary)
+    FROM Employees
+);
+
 -- 37. Get products that have never been ordered.
 
+-- Solution :
+SELECT *
+FROM Products
+WHERE product_id NOT IN (
+	SELECT DISTINCT product_id
+    FROM OrderDetails
+);
+
 -- 38. Retrieve customers who placed the highest order amount.
+
+-- Solution :
+SELECT
+	c.*,
+    total_amount
+FROM Orders o
+JOIN Customers c USING(customer_id)
+ORDER BY total_amount DESC
+LIMIT 1;
 
 -- 39. Find employees who joined before their department's manager.
 
 -- 40. Get departments where all employees earn more than $50,000.
 
+/*
 -- 41. Find orders that have payments made on a different date.
 
 -- 42. Retrieve employees whose salaries are higher than the department average.
