@@ -529,7 +529,39 @@ LIMIT 1;
 
 -- 39. Find employees who joined before their department's manager.
 
+-- Solution 1:
+SELECT *
+FROM Employees e
+WHERE e.hire_date < (
+	SELECT m.hire_date
+    FROM Departments d
+    JOIN Employees m ON d.manager_id = m.employee_id
+    WHERE d.department_id = e.department_id
+);
+
+-- Solution 2:
+SELECT
+	e.*,
+    d.manager_id,
+    m.employee_id AS manager_employee_id,
+    m.hire_date AS mananger_hire_date
+FROM Employees e
+JOIN Departments d USING(department_id)
+JOIN Employees m ON d.manager_id = m.employee_id
+WHERE e.hire_date < m.hire_date;
+
 -- 40. Get departments where all employees earn more than $50,000.
+
+-- Solution :
+SELECT
+	e1.department_id
+FROM Employees e1
+WHERE EXISTS (
+	SELECT 1
+    FROM Employees e2
+    WHERE e1.department_id = e2.department_id AND e2.salary > 70000
+)
+GROUP BY department_id;
 
 /*
 -- 41. Find orders that have payments made on a different date.
