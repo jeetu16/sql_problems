@@ -563,8 +563,23 @@ WHERE EXISTS (
 )
 GROUP BY department_id;
 
-/*
+
 -- 41. Find orders that have payments made on a different date.
+
+-- Solution 1 :
+SELECT *
+FROM Orders o
+WHERE order_id IN (
+	SELECT p.order_id
+    FROM Payments p
+    WHERE p.order_id = o.order_id AND p.payment_date != o.order_date
+);
+
+-- Solution 2 :
+SELECT o.*
+FROM Orders o
+JOIN Payments p USING(order_id)
+WHERE o.order_date != p.payment_date;
 
 -- 42. Retrieve employees whose salaries are higher than the department average.
 
@@ -574,7 +589,8 @@ GROUP BY department_id;
 
 -- 45. Find employees with the second-highest salary.
 
-Window Functions (10 Questions)
+/*
+-- Window Functions (10 Questions)
 
 -- 46. Rank employees based on salary within each department.
 
