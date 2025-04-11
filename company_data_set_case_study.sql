@@ -583,6 +583,16 @@ WHERE o.order_date != p.payment_date;
 
 -- 42. Retrieve employees whose salaries are higher than the department average.
 
+-- Solution :
+SELECT *
+FROM Employees e
+WHERE salary > (
+	SELECT
+		AVG(salary)
+    FROM Employees e1
+    WHERE e.department_id = e1.department_id
+);
+
 -- 43. Find products with a price higher than the category average.
 
 -- 44. Get customers who have placed more orders than the average number of orders.
