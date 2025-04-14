@@ -595,6 +595,15 @@ WHERE salary > (
 
 -- 43. Find products with a price higher than the category average.
 
+-- Solution :
+SELECT *
+FROM Products p
+WHERE price > (
+	SELECT AVG(c.price) AS avg_price
+    FROM Products c
+    WHERE c.category_id = p.category_id
+);
+
 -- 44. Get customers who have placed more orders than the average number of orders.
 
 -- 45. Find employees with the second-highest salary.
