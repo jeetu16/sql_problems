@@ -606,6 +606,22 @@ WHERE price > (
 
 -- 44. Get customers who have placed more orders than the average number of orders.
 
+-- Solution :
+SELECT
+	customer_id
+FROM Orders o
+GROUP BY customer_id
+HAVING COUNT(1) > (
+	SELECT AVG(o1.total_orders)
+    FROM (
+		SELECT 
+			customer_id,
+            COUNT(1) AS total_orders
+        FROM Orders
+        GROUP BY customer_id
+    ) as o1
+);
+
 -- 45. Find employees with the second-highest salary.
 
 /*
