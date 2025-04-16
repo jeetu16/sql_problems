@@ -624,6 +624,18 @@ HAVING COUNT(1) > (
 
 -- 45. Find employees with the second-highest salary.
 
+-- Solution :
+SELECT *
+FROM Employees
+WHERE salary = (
+	SELECT MAX(salary)
+    FROM Employees
+    WHERE salary < (
+		SELECT MAX(salary)
+        FROM Employees
+    )
+);
+
 /*
 -- Window Functions (10 Questions)
 
