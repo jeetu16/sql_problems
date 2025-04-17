@@ -636,10 +636,16 @@ WHERE salary = (
     )
 );
 
-/*
+
 -- Window Functions (10 Questions)
 
 -- 46. Rank employees based on salary within each department.
+
+-- Solution :
+SELECT
+	*,
+    DENSE_RANK() OVER(PARTITION BY department_id ORDER BY salary DESC) AS rnk
+FROM Employees;
 
 -- 47. Find the cumulative revenue of all orders.
 
@@ -649,6 +655,7 @@ WHERE salary = (
 
 -- 50. Find the total salary expenditure per department using window functions.
 
+/*
 -- 51. Retrieve the first order placed by each customer.
 
 -- 52. Find the difference in salary between each employee and the department average.
