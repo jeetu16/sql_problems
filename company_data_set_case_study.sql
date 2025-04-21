@@ -648,6 +648,11 @@ SELECT
 FROM Employees;
 
 -- 47. Find the cumulative revenue of all orders.
+-- Solution :
+SELECT
+	*,
+    SUM(total_amount) OVER (PARTITION BY order_id ORDER BY order_date) AS cumulative_revenue
+FROM Orders;
 
 -- 48. Retrieve the three most recent orders for each customer.
 
