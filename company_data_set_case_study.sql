@@ -656,6 +656,20 @@ FROM Orders;
 
 -- 48. Retrieve the three most recent orders for each customer.
 
+-- Solution :
+SELECT
+	order_id,
+    customer_id,
+    order_date,
+    total_amount
+FROM (
+	SELECT 
+		*,
+		ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY order_date DESC) AS rnk
+    FROM Orders
+) AS recent_order
+WHERE recent_order.rnk <= 3;
+
 -- 49. Get the moving average of salaries for employees hired in the last 5 years.
 
 -- 50. Find the total salary expenditure per department using window functions.
