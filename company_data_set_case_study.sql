@@ -672,6 +672,14 @@ WHERE recent_order.rnk <= 3;
 
 -- 49. Get the moving average of salaries for employees hired in the last 5 years.
 
+-- Solution:
+SELECT
+	*,
+    AVG(salary) OVER(ORDER BY hire_date ROWS BETWEEN 4 PRECEDING AND CURRENT ROW) AS moving_avg_salary
+FROM Employees
+WHERE hire_date >= DATE_SUB(NOW(), INTERVAL 5 YEAR)
+ORDER BY hire_date;
+
 -- 50. Find the total salary expenditure per department using window functions.
 
 /*
