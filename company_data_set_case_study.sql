@@ -682,6 +682,13 @@ ORDER BY hire_date;
 
 -- 50. Find the total salary expenditure per department using window functions.
 
+-- Solution:
+SELECT
+	*,
+    SUM(salary) OVER(PARTITION BY department_id) AS total_salary_expenditure
+FROM Employees;
+
+
 /*
 -- 51. Retrieve the first order placed by each customer.
 
