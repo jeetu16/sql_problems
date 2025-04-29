@@ -689,8 +689,23 @@ SELECT
 FROM Employees;
 
 
-/*
 -- 51. Retrieve the first order placed by each customer.
+
+-- Solution : 
+SELECT
+	c.customer_id,
+    c.first_name,
+    c.last_name,
+    f.order_id,
+    f.order_date
+FROM Customers c
+JOIN (
+	SELECT
+		*,
+        ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY order_date) AS rnk 
+	FROM Orders
+) AS f ON c.customer_id = f.customer_id
+WHERE rnk = 1;
 
 -- 52. Find the difference in salary between each employee and the department average.
 
@@ -700,7 +715,8 @@ FROM Employees;
 
 -- 55. Get the most recent salary record for each employee.
 
-CTEs & Recursive Queries (10 Questions)
+/*
+-- CTEs & Recursive Queries (10 Questions)
 
 -- 56. Find employees with a higher salary than their manager.
 
