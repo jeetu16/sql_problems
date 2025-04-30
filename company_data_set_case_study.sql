@@ -709,6 +709,13 @@ WHERE rnk = 1;
 
 -- 52. Find the difference in salary between each employee and the department average.
 
+-- Solution:
+SELECT
+	*,
+    ABS(salary - AVG(salary) OVER(PARTITION BY department_id)) AS salary_difference
+FROM Employees;
+
+
 -- 53. Rank products based on total sales quantity.
 
 -- 54. Retrieve the order ID, total amount, and rank based on order amount.
