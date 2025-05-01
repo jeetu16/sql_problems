@@ -718,6 +718,18 @@ FROM Employees;
 
 -- 53. Rank products based on total sales quantity.
 
+-- Solution:
+SELECT
+	*,
+    ROW_NUMBER() OVER(ORDER BY total_quantity DESC) AS rnk
+FROM (
+	SELECT
+		product_id,
+		SUM(quantity) AS total_quantity
+    FROM OrderDetails
+    GROUP BY product_id
+) AS ls;
+
 -- 54. Retrieve the order ID, total amount, and rank based on order amount.
 
 -- 55. Get the most recent salary record for each employee.
