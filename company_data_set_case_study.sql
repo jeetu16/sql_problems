@@ -732,6 +732,19 @@ FROM (
 
 -- 54. Retrieve the order ID, total amount, and rank based on order amount.
 
+-- Solution:
+SELECT
+	order_id,
+    total_amount,
+    ROW_NUMBER() OVER(ORDER BY total_amount DESC) AS rnk
+FROM (
+	SELECT
+		order_id,
+		SUM(unit_price * quantity) AS total_amount
+    FROM OrderDetails
+    GROUP BY order_id
+) AS ls;
+
 -- 55. Get the most recent salary record for each employee.
 
 /*
