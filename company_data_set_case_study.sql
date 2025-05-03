@@ -747,6 +747,22 @@ FROM (
 
 -- 55. Get the most recent salary record for each employee.
 
+-- Solution:
+SELECT
+	e.employee_id,
+    e.first_name,
+    e.last_name,
+    ls.salary,
+    ls.rnk
+FROM (
+	SELECT
+	*,
+	ROW_NUMBER() OVER(PARTITION BY employee_id ORDER BY effective_from DESC) as rnk
+FROM Salaries
+) AS ls
+JOIN Employees e ON ls.employee_id = e.employee_id
+WHERE ls.rnk = 1;
+
 /*
 -- CTEs & Recursive Queries (10 Questions)
 
