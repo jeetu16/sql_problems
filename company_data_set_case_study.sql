@@ -763,10 +763,36 @@ FROM Salaries
 JOIN Employees e ON ls.employee_id = e.employee_id
 WHERE ls.rnk = 1;
 
-/*
+
 -- CTEs & Recursive Queries (10 Questions)
 
 -- 56. Find employees with a higher salary than their manager.
+
+-- Solution:
+WITH EmployeeManager  AS
+(
+	SELECT
+		e.employee_id,
+        e.first_name AS emp_first_name,
+        e.last_name AS emp_last_name,
+		d.manager_id,
+        e.salary AS emp_salary
+	FROM Employees e
+	JOIN Departments d ON e.department_id = d.department_id
+)
+SELECT
+	em.employee_id,
+    em.emp_first_name,
+    em.emp_last_name,
+    emp_salary,
+    em.manager_id,
+    e.first_name AS manager_first_name,
+    e.last_name AS manager_last_name,
+    e.salary AS manager_salary
+FROM EmployeeManager  em
+JOIN Employees e ON em.manager_id = e.employee_id
+WHERE emp_salary > e.salary;
+
 
 -- 57. Get the department hierarchy using a recursive CTE.
 
@@ -786,7 +812,8 @@ WHERE ls.rnk = 1;
 
 -- 65. Get the cumulative order amount for each customer.
 
-Date & Time Functions (10 Questions)
+/*
+-- Date & Time Functions (10 Questions)
 
 -- 66.Find employees who have completed exactly 5 years in the company.
 
