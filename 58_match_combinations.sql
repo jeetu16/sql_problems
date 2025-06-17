@@ -8,7 +8,7 @@ CREATE TABLE teams2 (
     team_name VARCHAR(50) NOT NULL
 );
 
--- Inser values into teams2 table
+-- Insert values into teams2 table
 INSERT INTO teams2 (team_name) VALUES 
 ('CSK'),
 ('KKR'),
