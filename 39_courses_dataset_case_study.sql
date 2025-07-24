@@ -318,10 +318,17 @@ WHERE score >= passing_mark
 GROUP BY test_id, batch_id, name
 ORDER BY 1;
 
-/*
+-- > 5. A student can be transferred from one batch to another batch. If he is transferred from batch a to batch b. batch b’s active=true and batch a’s active=false in student_batch_maps.
+--   At a time, one student can be active in one batch only. One Student can not be transferred more than four times. Calculate each students attendance percentage for all the sessions created for his past batch. Consider only those sessions for which he was active in that past batch.
 
-5.A student can be transferred from one batch to another batch. If he is transferred from batch a to batch b. batch b’s active=true and batch a’s active=false in student_batch_maps.
- At a time, one student can be active in one batch only. One Student can not be transferred more than four times. Calculate each students attendance percentage for all the sessions created for his past batch. Consider only those sessions for which he was active in that past batch.
+select *
+from sessions;
+select *
+from student_batch_maps;
+select *
+from attendances;
+
+/*
 
 6. What is the average percentage of marks scored by each student in all the tests the student had appeared?
 
